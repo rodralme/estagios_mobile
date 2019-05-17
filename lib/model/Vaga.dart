@@ -4,7 +4,7 @@ class Vaga {
   final String titulo;
   final String descricao;
   final String remuneracao;
-  final String carga_horaria;
+  final String cargaHoraria;
   final String empresa;
   final String areas;
 
@@ -14,7 +14,7 @@ class Vaga {
     this.titulo,
     this.descricao,
     this.remuneracao,
-    this.carga_horaria,
+    this.cargaHoraria,
     this.empresa,
     this.areas,
   });
@@ -26,7 +26,7 @@ class Vaga {
       titulo: json['titulo'],
       descricao: json['descricao'],
       remuneracao: json['remuneracao'],
-      carga_horaria: json['carga_horaria'],
+      cargaHoraria: json['carga_horaria'],
       empresa: json['empresa'],
       areas: json['areas'],
     );
