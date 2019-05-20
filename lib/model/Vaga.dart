@@ -25,7 +25,7 @@ class Vaga {
       ativo: json['ativo'],
       titulo: json['titulo'],
       descricao: json['descricao'],
-      remuneracao: json['remuneracao'],
+      remuneracao: json['remuneracao'] ?? '<não especificado>',
       cargaHoraria: json['carga_horaria'],
       empresa: json['empresa'],
       areas: json['areas'],
