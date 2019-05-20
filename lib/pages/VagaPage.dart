@@ -12,33 +12,78 @@ class VagaPage extends StatefulWidget {
 }
 
 class VagaPageState extends State<VagaPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar("Vaga"),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              this.widget._vaga.titulo,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)
+        appBar: DefaultAppBar("Vaga"),
+        body: Column(children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text('Em: 15 Mai'),
+                      ),
+                      Expanded(
+                          child: Text('Período: 07/05 a 30/05',
+                              textAlign: TextAlign.right)),
+                    ],
+                  ),
+                  Divider(),
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: areas(),
+                  ),
+                  Text(this.widget._vaga.titulo,
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.attach_money),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Text(this.widget._vaga.remuneracao))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(bottom: 10.0, left: 2.0, right: 2.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.business_center),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Text(this.widget._vaga.empresa)),
+                      ],
+                    ),
+                  ),
+                  Text(this.widget._vaga.descricao,
+                      style: TextStyle(fontSize: 16.0))
+                ],
+              ),
             ),
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 4.0,
-              children: areas(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: FlatButton(
+              color: Colors.lightGreen,
+              padding: EdgeInsets.all(0),
+              child: Text('Candidatar'),
+              onPressed: () {
+                //
+              },
             ),
-            Text(
-                this.widget._vaga.descricao,
-                style: TextStyle(fontSize: 16.0)
-            )
-          ],
-        ),
-      ),
-    );
+          )
+        ]));
   }
 
   List<Widget> areas() {
