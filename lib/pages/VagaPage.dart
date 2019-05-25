@@ -32,10 +32,9 @@ class VagaPageState extends State<VagaPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
                     Divider(),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 4.0,
-                      children: areas(),
+                    Chip(
+                      avatar: Icon(Icons.bookmark),
+                      label: Text(this.widget._vaga.area),
                     ),
                     Text(this.widget._vaga.titulo,
                         style: TextStyle(
@@ -95,17 +94,5 @@ class VagaPageState extends State<VagaPage> {
                 ),
               ),
             ]));
-  }
-
-  List<Widget> areas() {
-    List<Widget> lista = <Widget>[];
-
-    if (this.widget._vaga.areas != null) {
-      lista.add(Chip(
-        avatar: Icon(Icons.bookmark),
-        label: Text(this.widget._vaga.areas),
-      ));
-    }
-    return lista;
   }
 }

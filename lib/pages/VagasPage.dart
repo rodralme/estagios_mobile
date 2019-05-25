@@ -1,10 +1,12 @@
+import 'dart:convert' as convert;
+
+import 'package:estagios/components/default_app_bar.dart';
+import 'package:estagios/constants.dart';
+import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:estagios/pages/VagaPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:estagios/components/default_app_bar.dart';
-import 'package:estagios/constants.dart';
-import 'dart:convert' as convert;
 
 class VagasPage extends StatefulWidget {
   @override
@@ -15,6 +17,16 @@ class _VagasPageState extends State<VagasPage> {
 
 //  int _page = 1;
 //  int _totalItens = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: DefaultAppBar("Vagas"),
+      body: Container(
+          child: lista()
+      ),
+    );
+  }
 
   Future<List<Vaga>> fetchVagas(int page) async {
     final response = await http.get(
@@ -53,13 +65,15 @@ class _VagasPageState extends State<VagasPage> {
             itemBuilder: (BuildContext context, int index) {
 
               if (index < snapshot.data.length) {
-                var vaga = snapshot.data[index];
+                Vaga vaga = snapshot.data[index];
+                var areaConfig = Area.areaConfig[vaga.sigla];
                 return ListTile(
-                  leading: CircleAvatar(
-                    child: Text('A'),
+                  leading: Icon(
+                      areaConfig['icon'],
+                      color: areaConfig['color']
                   ),
-                  title: Text(vaga.titulo),
-                  subtitle: Text(vaga.descricao),
+                  title: Text(vaga.tituloFormatado()),
+                  subtitle: Text(vaga.descricaoFormatada()),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return VagaPage(vaga);
@@ -73,16 +87,6 @@ class _VagasPageState extends State<VagasPage> {
           );
         }
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar("Vagas"),
-      body: Container(
-        child: lista()
-      ),
     );
   }
 }

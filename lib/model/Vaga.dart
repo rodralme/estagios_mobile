@@ -1,22 +1,35 @@
+
+
 class Vaga {
+
   final int id;
   final bool ativo;
   final String titulo;
   final String descricao;
+  final String inicio;
+  final String fim;
+  final String area;
+  final String sigla;
+  final String empresa;
   final String remuneracao;
   final String cargaHoraria;
-  final String empresa;
-  final String areas;
+  final String email;
+  final String telefone;
 
   Vaga({
     this.id,
     this.ativo,
     this.titulo,
     this.descricao,
+    this.inicio,
+    this.fim,
+    this.area,
+    this.sigla,
+    this.empresa,
     this.remuneracao,
     this.cargaHoraria,
-    this.empresa,
-    this.areas,
+    this.email,
+    this.telefone,
   });
 
   factory Vaga.fromJson(Map<String, dynamic> json) {
@@ -25,15 +38,28 @@ class Vaga {
       ativo: json['ativo'],
       titulo: json['titulo'],
       descricao: json['descricao'],
-      remuneracao: json['remuneracao'] ?? '<não especificado>',
-      cargaHoraria: json['carga_horaria'],
-      empresa: json['empresa'],
-      areas: json['areas'],
+      inicio: json['inicio'],
+      fim: json['fim'],
+      area: json['area'],
+      sigla: json['sigla'],
+      empresa: json['empresa'] ?? '<não informado>',
+      remuneracao: json['remuneracao'] ?? '<não informado>',
+      cargaHoraria: json['carga_horaria'] ?? '<não informado>',
+      email: json['email'] ?? '<não informado>',
+      telefone: json['telefone'] ?? '<não informado>',
     );
+  }
+
+  String tituloFormatado() {
+    return this.titulo.length > 50 ? this.titulo.substring(0, 47) + '...' : this.titulo;
+  }
+
+  String descricaoFormatada() {
+    return this.descricao.length > 150 ? this.descricao.substring(0, 147) + '...' : this.descricao;
   }
 
   @override
   String toString() {
-    return "$empresa - $titulo";
+    return "$sigla - $titulo";
   }
 }
