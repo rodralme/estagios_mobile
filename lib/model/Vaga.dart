@@ -57,6 +57,10 @@ class Vaga {
     return this.descricao.length > 150 ? this.descricao.substring(0, 147) + ' ...' : this.descricao;
   }
 
+  String periodo() {
+    return "Período: $inicio a $fim";
+  }
+
   @override
   String toString() {
     return "$sigla - $titulo";

@@ -46,8 +46,17 @@ class VagaBox extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(vaga.titulo, overflow: TextOverflow.ellipsis),
-          subtitle: Text(vaga.descricaoFormatada()),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 4.0),
+            child: Text(
+              vaga.titulo,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          subtitle: Text(
+            vaga.descricaoFormatada(),
+            textAlign: TextAlign.justify,
+          ),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return VagaPage(vaga);

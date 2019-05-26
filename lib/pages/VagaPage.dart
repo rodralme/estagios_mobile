@@ -1,19 +1,17 @@
 import 'package:estagios/components/default_app_bar.dart';
+import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
 
-class VagaPage extends StatefulWidget {
-  @override
-  VagaPageState createState() => VagaPageState();
+class VagaPage extends StatelessWidget {
+  VagaPage(this.vaga);
 
-  VagaPage(this._vaga);
+  final Vaga vaga;
 
-  final Vaga _vaga;
-}
-
-class VagaPageState extends State<VagaPage> {
   @override
   Widget build(BuildContext context) {
+    var areaConfig = Area.areaConfig[this.vaga.sigla];
+
     return Scaffold(
         appBar: DefaultAppBar("Vaga"),
         body: Column(
@@ -22,23 +20,33 @@ class VagaPageState extends State<VagaPage> {
               SingleChildScrollView(
                 padding: EdgeInsets.all(20.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text('Há 10 dias'),
-                        Text('Período: 07/05 a 30/05'),
+                        Text(vaga.createdAt),
+                        Text(vaga.periodo()),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     ),
                     Divider(),
                     Chip(
-                      avatar: Icon(Icons.bookmark),
-                      label: Text(this.widget._vaga.area),
+                      label: Text(vaga.area,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                      avatar: Icon(areaConfig['icon'],
+                          color: Colors.white, size: 20.0),
+                      backgroundColor: areaConfig['color'],
+                      padding: const EdgeInsets.only(left: 8.0, right: 4.0),
                     ),
-                    Text(this.widget._vaga.titulo,
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                      vaga.titulo,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
@@ -47,7 +55,7 @@ class VagaPageState extends State<VagaPage> {
                           Icon(Icons.attach_money),
                           Padding(
                               padding: EdgeInsets.only(left: 10.0),
-                              child: Text(this.widget._vaga.remuneracao)),
+                              child: Text(vaga.remuneracao)),
                         ],
                       ),
                     ),
@@ -59,12 +67,13 @@ class VagaPageState extends State<VagaPage> {
                           Icon(Icons.business_center),
                           Padding(
                               padding: EdgeInsets.only(left: 10.0),
-                              child: Text(this.widget._vaga.empresa)),
+                              child: Text(vaga.empresa)),
                         ],
                       ),
                     ),
-                    Text(this.widget._vaga.descricao,
-                        style: TextStyle(fontSize: 16.0)),
+                    Text(vaga.descricao,
+                        style: TextStyle(fontSize: 16.0),
+                        textAlign: TextAlign.justify),
                   ],
                 ),
               ),
@@ -73,9 +82,8 @@ class VagaPageState extends State<VagaPage> {
                 child: Container(
                   height: 50.0,
                   decoration: BoxDecoration(
-                    color: Colors.lightGreen,
-                    borderRadius: BorderRadius.all(Radius.circular(5))
-                  ),
+                      color: Colors.green,
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
                   child: SizedBox.expand(
                     child: FlatButton(
                       padding: EdgeInsets.all(0),
@@ -84,6 +92,7 @@ class VagaPageState extends State<VagaPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18.0,
+                          color: Colors.white,
                         ),
                       ),
                       onPressed: () {
