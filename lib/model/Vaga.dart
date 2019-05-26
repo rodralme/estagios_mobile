@@ -4,6 +4,7 @@ class Vaga {
 
   final int id;
   final bool ativo;
+  final String createdAt;
   final String titulo;
   final String descricao;
   final String inicio;
@@ -19,6 +20,7 @@ class Vaga {
   Vaga({
     this.id,
     this.ativo,
+    this.createdAt,
     this.titulo,
     this.descricao,
     this.inicio,
@@ -36,6 +38,7 @@ class Vaga {
     return Vaga(
       id: json['id'],
       ativo: json['ativo'],
+      createdAt: json['created_at'],
       titulo: json['titulo'],
       descricao: json['descricao'],
       inicio: json['inicio'],
@@ -50,12 +53,8 @@ class Vaga {
     );
   }
 
-  String tituloFormatado() {
-    return this.titulo.length > 50 ? this.titulo.substring(0, 47) + '...' : this.titulo;
-  }
-
   String descricaoFormatada() {
-    return this.descricao.length > 150 ? this.descricao.substring(0, 147) + '...' : this.descricao;
+    return this.descricao.length > 150 ? this.descricao.substring(0, 147) + ' ...' : this.descricao;
   }
 
   @override

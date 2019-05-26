@@ -2,9 +2,8 @@ import 'dart:convert' as convert;
 
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/constants.dart';
-import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
-import 'package:estagios/pages/VagaPage.dart';
+import 'package:estagios/pages/parts/VagaBox.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,20 +65,7 @@ class _VagasPageState extends State<VagasPage> {
 
               if (index < snapshot.data.length) {
                 Vaga vaga = snapshot.data[index];
-                var areaConfig = Area.areaConfig[vaga.sigla];
-                return ListTile(
-                  leading: Icon(
-                      areaConfig['icon'],
-                      color: areaConfig['color']
-                  ),
-                  title: Text(vaga.tituloFormatado()),
-                  subtitle: Text(vaga.descricaoFormatada()),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return VagaPage(vaga);
-                    }));
-                  },
-                );
+                return VagaBox(vaga);
               } else {
                 // incrementar
               }
