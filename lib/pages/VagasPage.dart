@@ -14,8 +14,8 @@ class VagasPage extends StatefulWidget {
 
 class _VagasPageState extends State<VagasPage> {
 
-//  int _page = 1;
-//  int _totalItens = 0;
+  var vagas = new List<Vaga>();
+  String next = "${Constants.API_ENDPOINT}/vagas";
 
   @override
   Widget build(BuildContext context) {
@@ -27,52 +27,45 @@ class _VagasPageState extends State<VagasPage> {
     );
   }
 
-  Future<List<Vaga>> fetchVagas(int page) async {
-    final response = await http.get(
-        "${Constants.API_ENDPOINT}/vagas?page=$page",
-        headers: {
-          "X-Access-Token": Constants.API_TOKEN
-        }
-    );
-
-    if (response.statusCode == 200) {
-      Map data = convert.jsonDecode(response.body);
-      List<Vaga> vagas = new List<Vaga>();
-      for (var vaga in data["data"]) {
-        vagas.add(Vaga.fromJson(vaga));
-      }
-      return vagas;
-    } else {
-      throw Exception('erro');
-    }
+  void initState() {
+//    fetchVagas();
   }
 
   Widget lista() {
-    return FutureBuilder<List<Vaga>>(
-      future: fetchVagas(1),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+    return ListView.separated(
+      separatorBuilder: (context, index) => Divider(color: Colors.grey),
+      itemCount: vagas.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (index < vagas.length) {
+          return VagaBox(vagas[index]);
         } else {
-          return ListView.separated(
-            separatorBuilder: (context, index) => Divider(color: Colors.grey),
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-
-              if (index < snapshot.data.length) {
-                Vaga vaga = snapshot.data[index];
-                return VagaBox(vaga);
-              } else {
-                // incrementar
-              }
-            }
-          );
+          if (next != null) {
+            fetchVagas();
+            return Container(child: Center(child: CircularProgressIndicator()));
+          }
         }
-      },
+      }
     );
+  }
+
+  Future<List<Vaga>> fetchVagas() async {
+    print(next);
+    final response = await http.get(
+        next,
+        headers: {"X-Access-Token": Constants.API_TOKEN});
+
+    if (response.statusCode == 200) {
+      Map data = convert.jsonDecode(response.body);
+      for (var vaga in data["data"]) {
+        setState(() {
+          vagas.add(Vaga.fromJson(vaga));
+        });
+      }
+      setState(() {
+        next = data['links']['next'];
+      });
+    } else {
+      throw Exception('Erro ao obter mais vagas');
+    }
   }
 }
