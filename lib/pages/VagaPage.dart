@@ -14,69 +14,73 @@ class VagaPage extends StatelessWidget {
 
     return Scaffold(
         appBar: DefaultAppBar("Vaga"),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SingleChildScrollView(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(vaga.createdAt),
-                        Text(vaga.periodo()),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    ),
-                    Divider(),
-                    Chip(
-                      label: Text(vaga.area,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                      avatar: Icon(areaConfig['icon'],
-                          color: Colors.white, size: 20.0),
-                      backgroundColor: areaConfig['color'],
-                      padding: const EdgeInsets.only(left: 8.0, right: 4.0),
-                    ),
-                    Text(
-                      vaga.titulo,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.attach_money),
-                          Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Text(vaga.remuneracao)),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 10.0, left: 2.0, right: 2.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.business_center),
-                          Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Text(vaga.empresa)),
-                        ],
-                      ),
-                    ),
-                    Text(vaga.descricao,
-                        style: TextStyle(fontSize: 16.0),
-                        textAlign: TextAlign.justify),
-                  ],
+              Row(
+                children: <Widget>[
+                  Text(vaga.createdAt),
+                  Text(vaga.periodo()),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Divider(),
+              Chip(
+                label: Text(vaga.area,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                avatar:
+                    Icon(areaConfig['icon'], color: Colors.white, size: 20.0),
+                backgroundColor: areaConfig['color'],
+                padding: const EdgeInsets.only(left: 8.0, right: 4.0),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                vaga.titulo,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 16.0),
+              Text(vaga.descricao,
+                  style: TextStyle(fontSize: 16.0),
+                  textAlign: TextAlign.justify),
+              SizedBox(height: 20.0),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.attach_money),
+                  SizedBox(width: 10.0),
+                  Text(vaga.remuneracao),
+                ],
+              ),
+              SizedBox(height: 4.0),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.alternate_email),
+                  SizedBox(width: 10.0),
+                  Text(vaga.email),
+                ],
+              ),
+              SizedBox(height: 4.0),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.phone),
+                  SizedBox(width: 10.0),
+                  Text(vaga.telefone),
+                ],
+              ),
+              SizedBox(height: 4.0),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.business_center),
+                  SizedBox(width: 10.0),
+                  Text(vaga.empresa),
+                ],
+              ),
+              SizedBox(height: 20.0),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 child: Container(
@@ -102,6 +106,8 @@ class VagaPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ]));
+            ],
+          ),
+        ));
   }
 }

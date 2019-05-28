@@ -27,10 +27,6 @@ class _VagasPageState extends State<VagasPage> {
     );
   }
 
-  void initState() {
-//    fetchVagas();
-  }
-
   Widget lista() {
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(color: Colors.grey),
