@@ -20,9 +20,18 @@ class _VagasPageState extends State<VagasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar("Vagas"),
+      appBar: DefaultAppBar("Estágios", actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.person),
+          tooltip: 'Usuário',
+          iconSize: 26.0,
+          onPressed: () {
+            Navigator.pushNamed(context, '/login');
+          },
+        ),
+      ],),
       body: Container(
-          child: lista()
+        child: lista()
       ),
     );
   }
