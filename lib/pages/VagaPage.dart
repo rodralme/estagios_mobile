@@ -13,101 +13,114 @@ class VagaPage extends StatelessWidget {
     var areaConfig = Area.areaConfig[this.vaga.sigla];
 
     return Scaffold(
-        appBar: DefaultAppBar("Vaga"),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(vaga.createdAt),
-                  Text(vaga.periodo()),
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ),
-              Divider(),
-              Chip(
-                label: Text(vaga.area,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                avatar:
-                    Icon(areaConfig['icon'], color: Colors.white, size: 20.0),
-                backgroundColor: areaConfig['color'],
-                padding: const EdgeInsets.only(left: 8.0, right: 4.0),
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                vaga.titulo,
+      appBar: DefaultAppBar("Vaga"),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(vaga.createdAt),
+                Text(vaga.periodo()),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            Divider(),
+            Chip(
+              label: Text(
+                vaga.area,
                 style: TextStyle(
-                  fontSize: 20.0,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16.0),
-              Text(vaga.descricao,
-                  style: TextStyle(fontSize: 16.0),
-                  textAlign: TextAlign.justify),
-              SizedBox(height: 20.0),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.attach_money),
-                  SizedBox(width: 10.0),
-                  Text(vaga.remuneracao),
-                ],
+              avatar: Icon(
+                areaConfig['icon'],
+                color: Colors.white,
+                size: 20.0,
               ),
-              SizedBox(height: 4.0),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.alternate_email),
-                  SizedBox(width: 10.0),
-                  Text(vaga.email),
-                ],
+              backgroundColor: areaConfig['color'],
+              padding: const EdgeInsets.only(left: 8.0, right: 4.0),
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              vaga.titulo,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 4.0),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.phone),
-                  SizedBox(width: 10.0),
-                  Text(vaga.telefone),
-                ],
-              ),
-              SizedBox(height: 4.0),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.business_center),
-                  SizedBox(width: 10.0),
-                  Text(vaga.empresa),
-                ],
-              ),
-              SizedBox(height: 20.0),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                child: Container(
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: SizedBox.expand(
-                    child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      child: Text(
-                        'Candidatar',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              vaga.descricao,
+              style: TextStyle(fontSize: 16.0),
+              textAlign: TextAlign.justify,
+            ),
+            SizedBox(height: 20.0),
+            Row(
+              children: <Widget>[
+                Icon(Icons.attach_money),
+                SizedBox(width: 10.0),
+                Text(vaga.remuneracao),
+              ],
+            ),
+            SizedBox(height: 4.0),
+            Row(
+              children: <Widget>[
+                Icon(Icons.alternate_email),
+                SizedBox(width: 10.0),
+                Text(vaga.email),
+              ],
+            ),
+            SizedBox(height: 4.0),
+            Row(
+              children: <Widget>[
+                Icon(Icons.phone),
+                SizedBox(width: 10.0),
+                Text(vaga.telefone),
+              ],
+            ),
+            SizedBox(height: 4.0),
+            Row(
+              children: <Widget>[
+                Icon(Icons.business_center),
+                SizedBox(width: 10.0),
+                Text(vaga.empresa),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Container(
+                height: 50.0,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+                child: SizedBox.expand(
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Text(
+                      'Candidatar',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18.0,
+                        color: Colors.white,
                       ),
-                      onPressed: () {
-                        //
-                      },
                     ),
+                    onPressed: () {
+                      //
+                    },
                   ),
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
