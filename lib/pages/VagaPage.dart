@@ -1,4 +1,5 @@
 import 'package:estagios/components/default_app_bar.dart';
+import 'package:estagios/connection.dart';
 import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
@@ -111,8 +112,9 @@ class VagaPage extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    onPressed: () {
-                      //
+                    onPressed: () async {
+//                      var conn = new Connection();
+//                      Map data = await conn.post('candidatar');
                     },
                   ),
                 ),

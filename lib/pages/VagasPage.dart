@@ -4,6 +4,7 @@ import 'package:estagios/model/Area.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:estagios/pages/parts/VagaBox.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VagasPage extends StatefulWidget {
   @override
@@ -34,8 +35,13 @@ class _VagasPageState extends State<VagasPage> {
             icon: Icon(Icons.person),
             tooltip: 'Usuário',
             iconSize: 26.0,
-            onPressed: () {
-              Navigator.pushNamed(context, '/login');
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              if ((prefs.getString('chave') ?? '') != '') {
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text('Logado')));
+              } else {
+                Navigator.pushNamed(context, '/login');
+              }
             },
           ),
         ],
