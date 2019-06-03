@@ -14,8 +14,9 @@ class _VagasPageState extends State<VagasPage> {
   List<DropdownMenuItem<String>> _filtroArea = [];
   var _currArea = '';
 
-  var vagas = new List<Vaga>();
-  String next = "/vagas";
+  var _vagas = new List<Vaga>();
+  int _page = 0;
+  bool _stopedFetch = false;
 
   @override
   void initState() {
@@ -68,9 +69,7 @@ class _VagasPageState extends State<VagasPage> {
               fontSize: 18.0,
             ),
             onChanged: (String value) {
-              setState(() {
-                _currArea = value;
-              });
+              filtroAlterado(value);
             },
           ),
         ),
@@ -79,37 +78,49 @@ class _VagasPageState extends State<VagasPage> {
   }
 
   Widget lista() {
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider(color: Colors.grey),
-      itemCount: vagas.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (index < vagas.length) {
-          return VagaBox(vagas[index]);
-        } else {
-          if (next != null) {
-            fetchVagas();
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+    if (_vagas.length > 0) {
+      return ListView.separated(
+        separatorBuilder: (context, index) => Divider(color: Colors.grey),
+        itemCount: _vagas.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          if (index < _vagas.length) {
+            return VagaBox(_vagas[index]);
+          } else {
+            if (!_stopedFetch) {
+              fetchVagas(1);
+            }
           }
-        }
-      },
-    );
+        },
+      );
+    } else {
+      fetchVagas(1);
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
   }
 
-  void fetchVagas() async {
-    var conn = new Connection();
-    Map data = await conn.get(next);
-
-    for (var vaga in data['data']) {
-      setState(() {
-        vagas.add(Vaga.fromJson(vaga));
-      });
+  void fetchVagas([int inc = 0]) async {
+    _stopedFetch = true;
+    var params = {'page': (_page + inc).toString()};
+    if (_currArea != '') {
+      params['area'] = _currArea;
     }
+
+    var conn = new Connection();
+    Map data = await conn.get('vagas', params);
+
+    List<Vaga> lista = [];
+    for (var vaga in data['data']) {
+      lista.add(Vaga.fromJson(vaga));
+    }
+
     setState(() {
-      next = data['links']['next'];
+      _page = data['meta']['current_page'];
+      _stopedFetch = data['meta']['current_page'] >= data['meta']['last_page'];
+      _vagas.addAll(lista);
     });
   }
 
@@ -129,5 +140,15 @@ class _VagasPageState extends State<VagasPage> {
         child: new Text(area.nome),
       ));
     }
+  }
+
+  void filtroAlterado(String value) {
+    setState(() {
+      _currArea = value;
+      _page = 1;
+      _stopedFetch = false;
+      _vagas = [];
+    });
+    fetchVagas();
   }
 }
