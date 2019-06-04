@@ -24,11 +24,11 @@ class Connection {
     var uri = Uri.https(Constants.API_ENDPOINT, unencodedPath, params);
     final response = await http.post(uri);
 
+    if (response.statusCode == 401) {
+      print('Falha de autenticação');
+      return null;
+    }
     if (response.statusCode != 200) {
-      if (response.statusCode == 401) {
-        print('Não autorizado');
-        return null;
-      }
       throw new Exception('Erro ao realizar a requisição.');
     }
     return convert.jsonDecode(response.body);

@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
+
+  var _loading = false;
 }
 
 class LoginPageState extends State<LoginPage> {
@@ -14,6 +16,16 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     double mediaWidth = MediaQuery.of(context).size.width;
+    final _email = TextEditingController();
+    final _password = TextEditingController();
+
+    if (this.widget._loading) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: DefaultAppBar("Login"),
@@ -26,6 +38,8 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
                   labelText: 'E-mail',
@@ -37,6 +51,7 @@ class LoginPageState extends State<LoginPage> {
                 },
               ),
               TextFormField(
+                controller: _password,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.vpn_key),
                   labelText: 'Senha',
@@ -57,10 +72,7 @@ class LoginPageState extends State<LoginPage> {
                     textColor: Colors.white,
                     onPressed: () {
                       if (formKey.currentState.validate()) {
-//                        logar(context);
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text('Logado!!!')),
-                        );
+                        logar(_email.text, _password.text);
                       }
                     },
                   ),
@@ -83,21 +95,22 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  void logar(BuildContext context) async {
+  void logar(email, password) async {
+    setState(() {
+      this.widget._loading = true;
+    });
     var conn = new Connection();
-    Map data = await conn.post('login');
+    Map data = await conn.post('login', {'email': email, 'password': password});
+
+    setState(() {
+      this.widget._loading = false;
+    });
 
     if (data != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('chave', data['token']);
+      prefs.setString('access_token', data['access_token']);
 
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text('Logado!!!')),
-      );
-    } else {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text('Credenciais inválidas')),
-      );
+      Navigator.pushNamed(context, '/profile');
     }
   }
 }

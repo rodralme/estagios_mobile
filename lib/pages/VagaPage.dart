@@ -4,14 +4,32 @@ import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
 
-class VagaPage extends StatelessWidget {
+class VagaPage extends StatefulWidget {
+
   VagaPage(this.vaga);
 
   final Vaga vaga;
 
   @override
+  _VagaPageState createState() => _VagaPageState();
+}
+
+class _VagaPageState extends State<VagaPage> {
+
+  var _loading = false;
+
+  @override
   Widget build(BuildContext context) {
-    var areaConfig = Area.areaConfig[this.vaga.sigla];
+    var vaga = this.widget.vaga;
+    var areaConfig = Area.areaConfig[vaga.sigla];
+
+    if (_loading) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: DefaultAppBar("Vaga"),
@@ -113,8 +131,8 @@ class VagaPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-//                      var conn = new Connection();
-//                      Map data = await conn.post('candidatar');
+                      var conn = new Connection();
+                      Map data = await conn.post('candidatar');
                     },
                   ),
                 ),

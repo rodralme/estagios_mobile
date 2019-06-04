@@ -37,8 +37,8 @@ class _VagasPageState extends State<VagasPage> {
             iconSize: 26.0,
             onPressed: () async {
               final prefs = await SharedPreferences.getInstance();
-              if ((prefs.getString('chave') ?? '') != '') {
-                Scaffold.of(context).showSnackBar(SnackBar(content: Text('Logado')));
+              if ((prefs.getString('access_token') ?? '') != '') {
+                Navigator.pushNamed(context, '/profile');
               } else {
                 Navigator.pushNamed(context, '/login');
               }
