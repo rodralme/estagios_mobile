@@ -13,7 +13,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-
     if (this.widget._loading) {
       return Container(
         child: Center(
@@ -22,18 +21,30 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+//    return Scaffold(
+//      appBar: DefaultAppBar("Perfil"),
+//      body: Container(
+//        child: RaisedButton(
+//          child: Text('Deslogar'),
+//          onPressed: () async {
+//            this.widget._loading = true;
+//            var connection = new Connection();
+//            var data = await connection.post('logout');
+//
+//            this.widget._loading = false;
+//          },
+//        ),
+//      ),
+//    );
+
     return Scaffold(
       appBar: DefaultAppBar("Perfil"),
       body: Container(
-        child: RaisedButton(
-          child: Text('Deslogar'),
-          onPressed: () async {
-            this.widget._loading = true;
-            var connection = new Connection();
-            var data = await connection.post('logout');
-
-            this.widget._loading = false;
-          },
+        child: Center(
+          child: Text(
+            'Em construção!',
+            style: TextStyle(fontSize: 25),
+          ),
         ),
       ),
     );

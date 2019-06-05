@@ -14,6 +14,13 @@ class LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double mediaWidth = MediaQuery.of(context).size.width;
     final _email = TextEditingController();
@@ -100,17 +107,19 @@ class LoginPageState extends State<LoginPage> {
       this.widget._loading = true;
     });
     var conn = new Connection();
-    Map data = await conn.post('login', {'email': email, 'password': password});
+    var data = await conn.post('login', {'email': email, 'password': password});
 
     setState(() {
       this.widget._loading = false;
     });
 
-    if (data != null) {
+    if (data == null || data['success'] == false) {
+      //
+    } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('access_token', data['access_token']);
 
-      Navigator.pushNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/profile');
     }
   }
 }

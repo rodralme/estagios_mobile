@@ -3,6 +3,7 @@ import 'package:estagios/connection.dart';
 import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VagaPage extends StatefulWidget {
 
@@ -133,6 +134,12 @@ class _VagaPageState extends State<VagaPage> {
                     onPressed: () async {
                       var conn = new Connection();
                       Map data = await conn.post('candidatar');
+
+                      if (data == null || data['success'] == false) {
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.remove('access_token');
+                        Navigator.pushNamed(context, '/login');
+                      }
                     },
                   ),
                 ),
