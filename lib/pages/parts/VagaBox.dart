@@ -1,4 +1,6 @@
+import 'package:estagios/connection.dart';
 import 'package:estagios/helpers/config.areas.dart';
+import 'package:estagios/model/ItemVaga.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:estagios/pages/VagaPage.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ class VagaBox extends StatelessWidget {
 
   VagaBox(this.vaga);
 
-  final Vaga vaga;
+  final ItemVaga vaga;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class VagaBox extends StatelessWidget {
                   Icon(Icons.access_time),
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(vaga.createdAt),
+                    child: Text(vaga.data),
                   ),
                 ],
               ),
@@ -57,10 +59,22 @@ class VagaBox extends StatelessWidget {
             vaga.descricaoFormatada(),
             textAlign: TextAlign.justify,
           ),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return VagaPage(vaga);
-            }));
+          onTap: () async {
+            var conn = new Connection();
+            Map data = await conn.get("vagas/${vaga.id}");
+
+            if (data['success'] == false) {
+              // todo
+              return;
+            }
+
+            print(data['data']);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VagaPage(Vaga.fromJson(data['data'])),
+              ),
+            );
           },
         ),
       ],

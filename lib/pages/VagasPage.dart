@@ -1,7 +1,10 @@
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Area.dart';
+import 'package:estagios/model/ItemVaga.dart';
+import 'package:estagios/model/Pessoa.dart';
 import 'package:estagios/model/Vaga.dart';
+import 'package:estagios/pages/ProfilePage.dart';
 import 'package:estagios/pages/parts/VagaBox.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +18,7 @@ class _VagasPageState extends State<VagasPage> {
   List<DropdownMenuItem<String>> _filtroArea = [];
   var _currArea = '';
 
-  var _vagas = new List<Vaga>();
+  var _vagas = new List<ItemVaga>();
   int _page = 0;
   bool _stopedFetch = false;
 
@@ -37,11 +40,29 @@ class _VagasPageState extends State<VagasPage> {
             iconSize: 26.0,
             onPressed: () async {
               final prefs = await SharedPreferences.getInstance();
-              if ((prefs.getString('access_token') ?? '') != '') {
-                Navigator.pushNamed(context, '/profile');
-              } else {
+              var token = prefs.getString('access_token') ?? '';
+
+              if (token == '') {
                 Navigator.pushNamed(context, '/login');
+                return;
               }
+
+              var conn = new Connection();
+              var data = await conn.get('profile');
+
+              if (data == null || !data['success']) {
+                // todo fazer
+                return;
+              }
+
+              var pessoa = Pessoa.fromJson(data['data']);
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(pessoa: pessoa),
+                ),
+              );
             },
           ),
         ],
@@ -118,9 +139,9 @@ class _VagasPageState extends State<VagasPage> {
     var conn = new Connection();
     Map data = await conn.get('vagas', params);
 
-    List<Vaga> lista = [];
+    List<ItemVaga> lista = [];
     for (var vaga in data['data']) {
-      lista.add(Vaga.fromJson(vaga));
+      lista.add(ItemVaga.fromJson(vaga));
     }
 
     setState(() {
@@ -132,7 +153,7 @@ class _VagasPageState extends State<VagasPage> {
 
   void popularFiltroArea() async {
     var conn = new Connection();
-    var data = await conn.get('/areas');
+    var data = await conn.get('areas');
 
     _filtroArea.add(new DropdownMenuItem(
       value: '',

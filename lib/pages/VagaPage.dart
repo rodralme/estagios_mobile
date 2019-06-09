@@ -3,20 +3,17 @@ import 'package:estagios/connection.dart';
 import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class VagaPage extends StatefulWidget {
+  final Vaga vaga;
 
   VagaPage(this.vaga);
-
-  final Vaga vaga;
 
   @override
   _VagaPageState createState() => _VagaPageState();
 }
 
 class _VagaPageState extends State<VagaPage> {
-
   var _loading = false;
 
   @override
@@ -41,7 +38,7 @@ class _VagaPageState extends State<VagaPage> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text(vaga.createdAt),
+                Text(vaga.dataFormatada),
                 Text(vaga.periodo()),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,6 +85,14 @@ class _VagaPageState extends State<VagaPage> {
             SizedBox(height: 4.0),
             Row(
               children: <Widget>[
+                Icon(Icons.access_time),
+                SizedBox(width: 10.0),
+                Text(vaga.cargaHoraria),
+              ],
+            ),
+            SizedBox(height: 4.0),
+            Row(
+              children: <Widget>[
                 Icon(Icons.alternate_email),
                 SizedBox(width: 10.0),
                 Text(vaga.email),
@@ -112,40 +117,72 @@ class _VagaPageState extends State<VagaPage> {
             SizedBox(height: 20.0),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              child: Container(
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: SizedBox.expand(
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Text(
-                      'Candidatar',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () async {
-                      var conn = new Connection();
-                      Map data = await conn.post('candidatar');
-
-                      if (data == null || data['success'] == false) {
-                        final prefs = await SharedPreferences.getInstance();
-                        prefs.remove('access_token');
-                        Navigator.pushNamed(context, '/login');
-                      }
-                    },
-                  ),
-                ),
-              ),
+              child: botaoCandidatar(vaga),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  botaoCandidatar(Vaga vaga) {
+    if (vaga.candidatado ?? false) {
+      return Container(
+        height: 50.0,
+        decoration: BoxDecoration(
+          color: Colors.grey[700],
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            'Candidatado',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      height: 50.0,
+      decoration: BoxDecoration(
+        color: Colors.green[700],
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+      ),
+      child: SizedBox.expand(
+        child: FlatButton(
+          padding: EdgeInsets.all(0),
+          child: Text(
+            'Candidatar',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+          ),
+          onPressed: () async {
+            var conn = new Connection();
+            Map data = await conn.post("vagas/${vaga.id}/candidatar");
+
+            if (data['success'] == false) {
+              Navigator.pushNamed(context, '/login');
+              return;
+            }
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VagaPage(Vaga.fromJson(data['data'])),
+              ),
+            );
+          },
         ),
       ),
     );

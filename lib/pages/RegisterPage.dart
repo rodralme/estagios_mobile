@@ -142,12 +142,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
       Pessoa pessoa = Pessoa.fromJson(data['data']);
 
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ProfilePage(pessoa: pessoa),
         ),
-        ModalRoute.withName('/vagas'),
       );
     }
 

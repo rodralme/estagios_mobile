@@ -1,12 +1,13 @@
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
+import 'package:estagios/model/Pessoa.dart';
+import 'package:estagios/pages/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
-
 }
 
 class LoginPageState extends State<LoginPage> {
@@ -15,8 +16,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-
-
     super.initState();
   }
 
@@ -110,13 +109,20 @@ class LoginPageState extends State<LoginPage> {
 
     _loading = false;
 
-    if (data == null || data['success'] == false) {
+    if (data['success'] == false) {
       // todo fazer
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', data['access_token']);
+      prefs.setString('access_token', data['meta']['access_token']);
 
-      Navigator.pushReplacementNamed(context, '/profile');
+      Pessoa pessoa = Pessoa.fromJson(data['data']);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(pessoa: pessoa),
+        ),
+      );
     }
   }
 }
