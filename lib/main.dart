@@ -1,5 +1,5 @@
 import 'package:estagios/pages/LoginPage.dart';
-import 'package:estagios/pages/ProfilePage.dart';
+import 'package:estagios/pages/RegisterPage.dart';
 import 'package:estagios/pages/VagasPage.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class Estagios extends StatelessWidget {
       home: VagasPage(),
       routes: <String, WidgetBuilder>{
         '/login': (context) => LoginPage(),
-        '/profile': (context) => ProfilePage(),
+        '/register': (context) => RegisterPage(),
         '/vagas': (context) => VagasPage(),
       }
     );

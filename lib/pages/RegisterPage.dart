@@ -1,32 +1,30 @@
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
+import 'package:estagios/model/Pessoa.dart';
+import 'package:estagios/pages/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  LoginPageState createState() => LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 
+  bool _loading = false;
 }
 
-class LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
-  var _loading = false;
 
-  @override
-  void initState() {
-
-
-    super.initState();
-  }
+  final _nome = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmation = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double mediaWidth = MediaQuery.of(context).size.width;
-    final _email = TextEditingController();
-    final _password = TextEditingController();
 
-    if (_loading) {
+    if (this.widget._loading) {
       return Container(
         child: Center(
           child: CircularProgressIndicator(),
@@ -35,7 +33,7 @@ class LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      appBar: DefaultAppBar("Login"),
+      appBar: DefaultAppBar("Cadastrar"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: mediaWidth * 0.08),
         child: Form(
@@ -45,10 +43,20 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
+                controller: _nome,
+                decoration: const InputDecoration(
+                  labelText: 'Nome',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                },
+              ),
+              TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
                   labelText: 'E-mail',
                 ),
                 validator: (value) {
@@ -60,8 +68,19 @@ class LoginPageState extends State<LoginPage> {
               TextFormField(
                 controller: _password,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.vpn_key),
                   labelText: 'Senha',
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                },
+              ),
+              TextFormField(
+                controller: _confirmation,
+                decoration: const InputDecoration(
+                  labelText: 'Confirmação da Senha',
                 ),
                 obscureText: true,
                 validator: (value) {
@@ -74,12 +93,12 @@ class LoginPageState extends State<LoginPage> {
               Row(
                 children: <Widget>[
                   RaisedButton(
-                    child: Text('Entrar'),
+                    child: Text('Cadastrar'),
                     color: Colors.green,
                     textColor: Colors.white,
                     onPressed: () {
                       if (formKey.currentState.validate()) {
-                        logar(_email.text, _password.text);
+                        registrar();
                       }
                     },
                   ),
@@ -89,7 +108,7 @@ class LoginPageState extends State<LoginPage> {
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      //
                     },
                   ),
                 ],
@@ -102,21 +121,38 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  void logar(email, password) async {
-    _loading = true;
+  void registrar() async {
+    setState(() {
+      this.widget._loading = true;
+    });
 
     var conn = new Connection();
-    var data = await conn.post('login', {'email': email, 'password': password});
-
-    _loading = false;
+    var data = await conn.post('register', {
+      'nome': _nome.text,
+      'email': _email.text,
+      'password': _password.text,
+      'password_confirmation': _confirmation.text,
+    });
 
     if (data == null || data['success'] == false) {
-      // todo fazer
+      //todo fazer
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', data['access_token']);
+      prefs.setString('access_token', data['meta']['access_token']);
 
-      Navigator.pushReplacementNamed(context, '/profile');
+      Pessoa pessoa = Pessoa.fromJson(data['data']);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(pessoa: pessoa),
+        ),
+        ModalRoute.withName('/vagas'),
+      );
     }
+
+    setState(() {
+      this.widget._loading = false;
+    });
   }
 }
