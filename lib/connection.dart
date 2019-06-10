@@ -40,4 +40,16 @@ class Connection {
     }
     throw new Exception('Erro ao realizar a requisição.');
   }
+
+  dynamic put(String url, [Map<String, String> params]) async {
+    var unencodedPath = 'api/' + url;
+    var uri = Uri.https(Constants.API_ENDPOINT, unencodedPath, params);
+    var headers = await getHeaders();
+    final response = await http.put(uri, headers: headers);
+
+    if ([200, 422, 401].contains(response.statusCode)) {
+      return jsonDecode(response.body);
+    }
+    throw new Exception('Erro ao realizar a requisição.');
+  }
 }

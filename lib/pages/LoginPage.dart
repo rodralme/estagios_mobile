@@ -13,6 +13,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   var _loading = false;
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   void initState() {
@@ -22,8 +24,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     double mediaWidth = MediaQuery.of(context).size.width;
-    final _email = TextEditingController();
-    final _password = TextEditingController();
 
     if (_loading) {
       return Container(
@@ -35,7 +35,7 @@ class LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: DefaultAppBar("Login"),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: mediaWidth * 0.08),
         child: Form(
           key: formKey,
@@ -78,7 +78,7 @@ class LoginPageState extends State<LoginPage> {
                     textColor: Colors.white,
                     onPressed: () {
                       if (formKey.currentState.validate()) {
-                        logar(_email.text, _password.text);
+                        logar();
                       }
                     },
                   ),
@@ -101,13 +101,12 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  void logar(email, password) async {
-    _loading = true;
-
+  void logar() async {
     var conn = new Connection();
-    var data = await conn.post('login', {'email': email, 'password': password});
-
-    _loading = false;
+    var data = await conn.post('login', {
+      'email': _email.text,
+      'password': _password.text,
+    });
 
     if (data['success'] == false) {
       // todo fazer

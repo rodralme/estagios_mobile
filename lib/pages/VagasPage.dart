@@ -50,17 +50,16 @@ class _VagasPageState extends State<VagasPage> {
               var conn = new Connection();
               var data = await conn.get('profile');
 
-              if (data == null || !data['success']) {
-                // todo fazer
+              if (!data['success']) {
+                Navigator.pushNamed(context, '/login');
                 return;
               }
 
-              var pessoa = Pessoa.fromJson(data['data']);
-
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(pessoa: pessoa),
+                  builder: (context) =>
+                      ProfilePage(pessoa: Pessoa.fromJson(data['data'])),
                 ),
               );
             },

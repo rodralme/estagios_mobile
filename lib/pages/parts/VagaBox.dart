@@ -64,11 +64,10 @@ class VagaBox extends StatelessWidget {
             Map data = await conn.get("vagas/${vaga.id}");
 
             if (data['success'] == false) {
-              // todo
+              // todo fazer
               return;
             }
 
-            print(data['data']);
             Navigator.push(
               context,
               MaterialPageRoute(
