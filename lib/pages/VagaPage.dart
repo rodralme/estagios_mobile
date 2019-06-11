@@ -18,7 +18,7 @@ class _VagaPageState extends State<VagaPage> {
 
   @override
   Widget build(BuildContext context) {
-    var vaga = this.widget.vaga;
+    Vaga vaga = this.widget.vaga;
     var areaConfig = Area.areaConfig[vaga.sigla];
 
     if (_loading) {
@@ -115,12 +115,24 @@ class _VagaPageState extends State<VagaPage> {
               ],
             ),
             SizedBox(height: 20.0),
+            banner(vaga.banner),
+            SizedBox(height: 20.0),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: botaoCandidatar(vaga),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget banner(url) {
+    print(url);
+    if (url == null || url == '') return new SizedBox();
+    return Center(
+      child: Image.network(
+        url,
       ),
     );
   }

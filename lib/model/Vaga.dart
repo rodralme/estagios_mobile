@@ -14,6 +14,7 @@ class Vaga {
   final String email;
   final String telefone;
   final bool candidatado;
+  final String banner;
 
   Vaga({
     this.id,
@@ -31,6 +32,7 @@ class Vaga {
     this.email,
     this.telefone,
     this.candidatado,
+    this.banner,
   });
 
   factory Vaga.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class Vaga {
       email: json['email'] ?? '<não informado>',
       telefone: json['telefone'] ?? '<não informado>',
       candidatado: json['candidatado'] ?? false,
+      banner: json['banner'] ?? '',
       empresa: json['empresa'] != null ? json['empresa']['nome'] : '<não informado>',
     );
   }
@@ -57,8 +60,8 @@ class Vaga {
     return "Período: $inicio a $fim";
   }
 
-//  @override
-//  String toString() {
-//    return "$sigla - $titulo";
-//  }
+  @override
+  String toString() {
+    return "$sigla - $titulo";
+  }
 }
