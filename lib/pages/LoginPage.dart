@@ -43,6 +43,10 @@ class LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(mediaWidth * 0.2),
+                child: Image.asset('assets/images/logo.png'),
+              ),
               TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
