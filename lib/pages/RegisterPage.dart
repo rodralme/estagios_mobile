@@ -34,14 +34,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return Scaffold(
       appBar: DefaultAppBar("Cadastrar"),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: mediaWidth * 0.08),
         child: Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: mediaWidth * 0.3,
+                  vertical: mediaWidth * 0.08,
+                ),
+                child: Image.asset('assets/images/logo.png'),
+              ),
               TextFormField(
                 controller: _nome,
                 decoration: const InputDecoration(
@@ -100,15 +106,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (formKey.currentState.validate()) {
                         registrar();
                       }
-                    },
-                  ),
-                  SizedBox(width: 10.0),
-                  RaisedButton(
-                    child: Text('Cadastrar'),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      //
                     },
                   ),
                 ],

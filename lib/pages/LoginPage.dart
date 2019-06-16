@@ -44,7 +44,10 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(mediaWidth * 0.2),
+                padding: EdgeInsets.symmetric(
+                  horizontal: mediaWidth * 0.2,
+                  vertical: mediaWidth * 0.1,
+                ),
                 child: Image.asset('assets/images/logo.png'),
               ),
               TextFormField(
