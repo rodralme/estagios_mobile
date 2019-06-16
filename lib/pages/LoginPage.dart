@@ -95,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushReplacementNamed(context, '/register');
                     },
                   ),
                 ],
