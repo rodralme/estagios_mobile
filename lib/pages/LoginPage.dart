@@ -58,9 +58,7 @@ class LoginPageState extends State<LoginPage> {
                   labelText: 'E-mail',
                 ),
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
+                  return value.isEmpty ? 'Campo obrigatório' : null;
                 },
               ),
               TextFormField(
@@ -71,35 +69,26 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 obscureText: true,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
+                  return value.isEmpty ? 'Campo obrigatório' : null;
                 },
               ),
               SizedBox(height: 20.0),
-              Row(
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Entrar'),
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        logar();
-                      }
-                    },
-                  ),
-                  SizedBox(width: 10.0),
-                  RaisedButton(
-                    child: Text('Cadastrar'),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/register');
-                    },
-                  ),
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
+              RaisedButton(
+                child: Text('Entrar'),
+                color: Colors.green,
+                textColor: Colors.white,
+                onPressed: () {
+                  if (formKey.currentState.validate()) {
+                    logar();
+                  }
+                },
+              ),
+              FlatButton(
+                child: Text('Quero me cadastrar'),
+                textColor: Colors.blue[800],
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/register');
+                },
               ),
             ],
           ),

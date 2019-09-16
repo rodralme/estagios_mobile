@@ -1,4 +1,5 @@
 import 'package:estagios/components/default_app_bar.dart';
+import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
 import 'package:estagios/pages/ProfilePage.dart';
@@ -48,52 +49,24 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 child: Image.asset('assets/images/logo.png'),
               ),
-              TextFormField(
+              CampoTexto(
                 controller: _nome,
-                decoration: const InputDecoration(
-                  labelText: 'Nome',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                },
+                label: 'Nome',
               ),
-              TextFormField(
+              CampoTexto(
                 controller: _email,
+                label: 'E-mail',
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'E-mail',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                },
               ),
-              TextFormField(
+              CampoTexto(
                 controller: _password,
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                ),
+                label: 'Senha',
                 obscureText: true,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                },
               ),
-              TextFormField(
+              CampoTexto(
                 controller: _confirmation,
-                decoration: const InputDecoration(
-                  labelText: 'Confirmação da Senha',
-                ),
+                label: 'Confirmação da Senha',
                 obscureText: true,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                },
               ),
               SizedBox(height: 20.0),
               Row(
@@ -104,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     textColor: Colors.white,
                     onPressed: () {
                       if (formKey.currentState.validate()) {
-                        registrar();
+                        registrar(context);
                       }
                     },
                   ),
@@ -118,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void registrar() async {
+  void registrar(_context) async {
     setState(() {
       this.widget._loading = true;
     });
@@ -131,24 +104,26 @@ class _RegisterPageState extends State<RegisterPage> {
       'password_confirmation': _confirmation.text,
     });
 
-    if (data == null || data['success'] == false) {
-      //todo fazer
-    } else {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', data['meta']['access_token']);
+    try {
+      if (data == null || data['success'] == false) {
+        //todo fazer
+      } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('access_token', data['meta']['access_token']);
 
-      Pessoa pessoa = Pessoa.fromJson(data['data']);
+        Pessoa pessoa = Pessoa.fromJson(data['data']);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(pessoa: pessoa),
-        ),
-      );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(pessoa: pessoa),
+          ),
+        );
+      }
+    } finally {
+      setState(() {
+        this.widget._loading = false;
+      });
     }
-
-    setState(() {
-      this.widget._loading = false;
-    });
   }
 }
