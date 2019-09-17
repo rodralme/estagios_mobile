@@ -52,21 +52,25 @@ class _RegisterPageState extends State<RegisterPage> {
               CampoTexto(
                 controller: _nome,
                 label: 'Nome',
+                rules: 'required',
               ),
               CampoTexto(
                 controller: _email,
                 label: 'E-mail',
                 keyboardType: TextInputType.emailAddress,
+                rules: 'required|email',
               ),
               CampoTexto(
                 controller: _password,
                 label: 'Senha',
                 obscureText: true,
+                rules: 'required',
               ),
               CampoTexto(
                 controller: _confirmation,
                 label: 'Confirmação da Senha',
                 obscureText: true,
+                rules: 'required',
               ),
               SizedBox(height: 20.0),
               Row(
