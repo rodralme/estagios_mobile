@@ -3,10 +3,9 @@ import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:validators/validators.dart';
 
 class ProfilePage extends StatefulWidget {
   final Pessoa pessoa;

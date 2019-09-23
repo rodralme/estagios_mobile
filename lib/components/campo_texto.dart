@@ -7,6 +7,7 @@ class CampoTexto extends StatelessWidget {
     this.controller,
     this.keyboardType = TextInputType.text,
     this.label,
+    this.icon,
     this.obscureText = false,
     this.rules,
   });
@@ -14,6 +15,7 @@ class CampoTexto extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String label;
+  final Icon icon;
   final bool obscureText;
   final String rules;
 
@@ -23,6 +25,7 @@ class CampoTexto extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        icon: icon,
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
@@ -41,16 +44,16 @@ class CampoTexto extends StatelessWidget {
   validar(value, rule) {
     switch (rule) {
       case 'required': {
-        return !value.isEmpty ?? 'Campo obrigatório';
+        return value.isEmpty ? 'Campo obrigatório' : null;
       }
       case 'email': {
-        return isEmail(value) ?? 'E-mail inválido';
+        return !isEmail(value) ? 'E-mail inválido' : null;
       }
       case 'date': {
-        return getData(value) ?? 'Data inválida';
+        return getData(value) == null ? 'Data inválida' : null;
       }
       case 'phone': {
-        return isPhone(value) ?? 'Telefone inválido';
+        return !isPhone(value) ? 'Telefone inválido' : null;
       }
     }
     return null;

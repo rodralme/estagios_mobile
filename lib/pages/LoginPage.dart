@@ -1,3 +1,4 @@
+import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
@@ -33,65 +34,64 @@ class LoginPageState extends State<LoginPage> {
       );
     }
 
-    return Scaffold(
-      appBar: DefaultAppBar("Login"),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: mediaWidth * 0.08),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: mediaWidth * 0.2,
-                  vertical: mediaWidth * 0.1,
-                ),
-                child: Image.asset('assets/images/logo.png'),
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: mediaWidth * 0.08),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: mediaWidth * 0.2,
+                vertical: mediaWidth * 0.1,
               ),
-              TextFormField(
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'E-mail',
-                ),
-                validator: (value) {
-                  return value.isEmpty ? 'Campo obrigatório' : null;
-                },
-              ),
-              TextFormField(
-                controller: _password,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.vpn_key),
-                  labelText: 'Senha',
-                ),
-                obscureText: true,
-                validator: (value) {
-                  return value.isEmpty ? 'Campo obrigatório' : null;
-                },
-              ),
-              SizedBox(height: 20.0),
-              RaisedButton(
-                child: Text('Entrar'),
-                color: Colors.green,
-                textColor: Colors.white,
-                onPressed: () {
+              child: Image.asset('assets/images/logo.png'),
+            ),
+            CampoTexto(
+              controller: _email,
+              keyboardType: TextInputType.emailAddress,
+              icon: Icon(Icons.person),
+              label: 'E-mail',
+              rules: 'required|email',
+            ),
+            CampoTexto(
+              controller: _password,
+              icon: Icon(Icons.vpn_key),
+              label: 'Senha',
+              obscureText: true,
+              rules: 'required',
+            ),
+            SizedBox(height: 20.0),
+            RaisedButton(
+              child: Text('Entrar'),
+              color: Colors.green,
+              textColor: Colors.white,
+              onPressed: () async {
+                FocusScope.of(context).requestFocus(new FocusNode());
+                setState(() {
+                  this._loading = true;
+                });
+                try {
                   if (formKey.currentState.validate()) {
-                    logar();
+                    await logar();
                   }
-                },
-              ),
-              FlatButton(
-                child: Text('Quero me cadastrar'),
-                textColor: Colors.blue[800],
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/register');
-                },
-              ),
-            ],
-          ),
+                } finally {
+                  setState(() {
+                    this._loading = false;
+                  });
+                }
+              },
+            ),
+            FlatButton(
+              child: Text('Quero me cadastrar'),
+              textColor: Colors.blue[800],
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/register');
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -105,7 +105,10 @@ class LoginPageState extends State<LoginPage> {
     });
 
     if (data['success'] == false) {
-      // todo fazer
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Usuário ou senha inválidos'),
+        behavior: SnackBarBehavior.floating,
+      ));
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('access_token', data['meta']['access_token']);
