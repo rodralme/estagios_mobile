@@ -1,5 +1,4 @@
 import 'package:estagios/components/campo_texto.dart';
-import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
 import 'package:estagios/pages/ProfilePage.dart';
@@ -68,19 +67,11 @@ class LoginPageState extends State<LoginPage> {
               child: Text('Entrar'),
               color: Colors.green,
               textColor: Colors.white,
-              onPressed: () async {
+              onPressed: () {
+                if (_loading) return;
                 FocusScope.of(context).requestFocus(new FocusNode());
-                setState(() {
-                  this._loading = true;
-                });
-                try {
-                  if (formKey.currentState.validate()) {
-                    await logar();
-                  }
-                } finally {
-                  setState(() {
-                    this._loading = false;
-                  });
+                if (formKey.currentState.validate()) {
+                  logar();
                 }
               },
             ),
@@ -98,29 +89,35 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void logar() async {
-    var conn = new Connection();
-    var data = await conn.post('login', {
-      'email': _email.text,
-      'password': _password.text,
-    });
+    setState(() => _loading = true);
 
-    if (data['success'] == false) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Usuário ou senha inválidos'),
-        behavior: SnackBarBehavior.floating,
-      ));
-    } else {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', data['meta']['access_token']);
+    try {
+      var conn = new Connection();
+      var data = await conn.post('login', {
+        'email': _email.text,
+        'password': _password.text,
+      });
 
-      Pessoa pessoa = Pessoa.fromJson(data['data']);
+      if (data['success'] == false) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Usuário ou senha inválidos'),
+          behavior: SnackBarBehavior.floating,
+        ));
+      } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('access_token', data['meta']['access_token']);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(pessoa: pessoa),
-        ),
-      );
+        Pessoa pessoa = Pessoa.fromJson(data['data']);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(pessoa: pessoa),
+          ),
+        );
+      }
+    } finally {
+      setState(() => _loading = false);
     }
   }
 }

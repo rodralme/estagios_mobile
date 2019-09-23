@@ -1,11 +1,11 @@
+import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:validators/validators.dart';
 
 class ProfilePage extends StatefulWidget {
   final Pessoa pessoa;
@@ -19,8 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final formKey = GlobalKey<FormState>();
 
-  var _salvando = false;
-  var _deslogando = false;
+  var _loading = false;
 
   final _nome = TextEditingController();
   final _email = TextEditingController();
@@ -52,7 +51,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    double mediaWidth = MediaQuery.of(context).size.width;
+    if (_loading) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: DefaultAppBar("Perfil"),
       body: Stack(
@@ -66,74 +72,39 @@ class _ProfilePageState extends State<ProfilePage> {
                   key: formKey,
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
+                      CampoTexto(
                         controller: _nome,
-                        decoration: const InputDecoration(
-                          labelText: 'Nome',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Campo obrigatório';
-                          }
-                        },
+                        label: 'Nome',
+                        rules: 'required',
                       ),
-                      TextFormField(
+                      CampoTexto(
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          labelText: 'E-mail',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return null;
-                          }
-                          if (!isEmail(value)) {
-                            return "E-mail inválido";
-                          }
-                        },
+                        label: 'E-mail',
+                        rules: 'email',
                       ),
-                      TextFormField(
+                      CampoTexto(
                         controller: _nascimento,
                         keyboardType: TextInputType.datetime,
-                        decoration: const InputDecoration(
-                          labelText: 'Nascimento',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return null;
-                          } else if (getData(value) == null) {
-                            return "Data inválida";
-                          }
-                        },
+                        label: 'Nascimento',
+                        rules: 'data',
                       ),
-                      TextFormField(
+                      CampoTexto(
                         controller: _telefone,
                         keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: "Telefone",
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim() == "") {
-                            return null;
-                          }
-                          if (!matches(value,
-                              r"^(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})")) {
-                            return "Telefone inválido";
-                          }
-                        },
+                        label: "Telefone",
+                        rules: 'phone',
                       ),
-                      TextFormField(
+                      CampoTexto(
                         controller: _sobre,
-                        decoration: const InputDecoration(
-                          labelText: 'Sobre',
-                        ),
+                        label: 'Sobre',
                       ),
                       SizedBox(height: 20.0),
                       Row(
                         children: <Widget>[
                           RaisedButton(
                             child: Text(
-                              _salvando ? 'Salvando...' : 'Salvar',
+                              'Salvar',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -142,7 +113,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.blue,
                             textColor: Colors.white,
                             onPressed: () {
-                              if (!_salvando && formKey.currentState.validate()) {
+                              if (_loading) return;
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                              if (formKey.currentState.validate()) {
                                 salvar(context);
                               }
                             },
@@ -150,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(width: 10.0),
                           RaisedButton(
                             child: Text(
-                              _deslogando ? 'Deslogando...' : 'Deslogar',
+                              'Deslogar',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -159,7 +132,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.red[700],
                             textColor: Colors.white,
                             onPressed: () {
-                              if (!_deslogando) deslogar(context);
+                              if (_loading) return;
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                              deslogar(context);
                             },
                           ),
                         ],
@@ -185,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void salvar(BuildContext context) async {
-    setState(() => _salvando = true);
+    setState(() => _loading = true);
 
     var params = {
       'nome': this._nome.text,
@@ -201,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
       data = await connection.put(
           "pessoas/${this.widget.pessoa.id}", params);
     } finally {
-      setState(() => _salvando = false);
+      setState(() => _loading = false);
     }
 
     if (data['success']) {
@@ -226,12 +201,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void deslogar(context) async {
-    setState(() => _deslogando = true);
+    setState(() => _loading = true);
 
     var connection = new Connection();
     var data = await connection.post('logout');
 
-    setState(() => _deslogando = false);
+    setState(() => _loading = false);
 
     if (data['success']) {
       SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -30,7 +30,7 @@ class CampoTexto extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: (value) {
-        for (var rule in rules.split('|')) {
+        for (var rule in (rules ?? '').split('|')) {
           var msg = validar(value, rule);
           if (msg != null) {
             return msg;

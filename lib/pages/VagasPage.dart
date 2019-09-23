@@ -3,7 +3,6 @@ import 'package:estagios/connection.dart';
 import 'package:estagios/model/Area.dart';
 import 'package:estagios/model/ItemVaga.dart';
 import 'package:estagios/model/Pessoa.dart';
-import 'package:estagios/model/Vaga.dart';
 import 'package:estagios/pages/ProfilePage.dart';
 import 'package:estagios/pages/parts/VagaBox.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +114,7 @@ class _VagasPageState extends State<VagasPage> {
             if (!_stopedFetch) {
               fetchVagas(1);
             }
+            return null;
           }
         },
       );

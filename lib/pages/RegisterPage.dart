@@ -9,12 +9,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
-
-  bool _loading = false;
 }
 
 class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
+  bool _loading = false;
 
   final _nome = TextEditingController();
   final _email = TextEditingController();
@@ -25,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     double mediaWidth = MediaQuery.of(context).size.width;
 
-    if (this.widget._loading) {
+    if (this._loading) {
       return Container(
         child: Center(
           child: CircularProgressIndicator(),
@@ -96,9 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void registrar(_context) async {
-    setState(() {
-      this.widget._loading = true;
-    });
+    setState(() => _loading = true);
 
     var conn = new Connection();
     var data = await conn.post('register', {
@@ -125,9 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
         );
       }
     } finally {
-      setState(() {
-        this.widget._loading = false;
-      });
+      setState(() => _loading = false);
     }
   }
 }
