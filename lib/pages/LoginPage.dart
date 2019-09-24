@@ -1,7 +1,7 @@
 import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
-import 'package:estagios/pages/ProfilePage.dart';
+import 'package:estagios/pages/perfil/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,7 +112,7 @@ class LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfilePage(pessoa: pessoa),
+            builder: (context) => PerfilPage(pessoa: pessoa),
           ),
         );
       }
