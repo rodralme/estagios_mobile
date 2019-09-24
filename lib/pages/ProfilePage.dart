@@ -59,94 +59,119 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    return Scaffold(
-      appBar: DefaultAppBar("Perfil"),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          SingleChildScrollView(
-            padding: EdgeInsets.all(20),
-            child: Column(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: DefaultAppBar(
+          "Perfil",
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.person),
+                text: 'Meus Dados',
+              ),
+              Tab(
+                icon: Icon(Icons.wallpaper),
+                text: 'Anúncios',
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            Stack(
+              fit: StackFit.expand,
               children: <Widget>[
-                Form(
-                  key: formKey,
+                SingleChildScrollView(
+                  padding: EdgeInsets.all(20),
                   child: Column(
                     children: <Widget>[
-                      CampoTexto(
-                        controller: _nome,
-                        label: 'Nome',
-                        rules: 'required',
-                      ),
-                      CampoTexto(
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        label: 'E-mail',
-                        rules: 'email',
-                      ),
-                      CampoTexto(
-                        controller: _nascimento,
-                        keyboardType: TextInputType.datetime,
-                        label: 'Nascimento',
-                        rules: 'data',
-                      ),
-                      CampoTexto(
-                        controller: _telefone,
-                        keyboardType: TextInputType.phone,
-                        label: "Telefone",
-                        rules: 'phone',
-                      ),
-                      CampoTexto(
-                        controller: _sobre,
-                        label: 'Sobre',
-                      ),
-                      SizedBox(height: 20.0),
-                      Row(
-                        children: <Widget>[
-                          RaisedButton(
-                            child: Text(
-                              'Salvar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: <Widget>[
+                            CampoTexto(
+                              controller: _nome,
+                              label: 'Nome',
+                              rules: 'required',
                             ),
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              if (_loading) return;
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              if (formKey.currentState.validate()) {
-                                salvar(context);
-                              }
-                            },
-                          ),
-                          SizedBox(width: 10.0),
-                          RaisedButton(
-                            child: Text(
-                              'Deslogar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                            CampoTexto(
+                              controller: _email,
+                              keyboardType: TextInputType.emailAddress,
+                              label: 'E-mail',
+                              rules: 'email',
                             ),
-                            color: Colors.red[700],
-                            textColor: Colors.white,
-                            onPressed: () {
-                              if (_loading) return;
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              deslogar(context);
-                            },
-                          ),
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.center,
+                            CampoTexto(
+                              controller: _nascimento,
+                              keyboardType: TextInputType.datetime,
+                              label: 'Nascimento',
+                              rules: 'data',
+                            ),
+                            CampoTexto(
+                              controller: _telefone,
+                              keyboardType: TextInputType.phone,
+                              label: "Telefone",
+                              rules: 'phone',
+                            ),
+                            CampoTexto(
+                              controller: _sobre,
+                              label: 'Sobre',
+                            ),
+                            SizedBox(height: 20.0),
+                            Row(
+                              children: <Widget>[
+                                RaisedButton(
+                                  child: Text(
+                                    'Salvar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  color: Colors.blue,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    if (_loading) return;
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    if (formKey.currentState.validate()) {
+                                      salvar(context);
+                                    }
+                                  },
+                                ),
+                                SizedBox(width: 10.0),
+                                RaisedButton(
+                                  child: Text(
+                                    'Deslogar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  color: Colors.red[700],
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    if (_loading) return;
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    deslogar(context);
+                                  },
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+
+            Text('teste'),
+          ],
+        ),
       ),
     );
   }
@@ -165,7 +190,8 @@ class _ProfilePageState extends State<ProfilePage> {
     var params = {
       'nome': this._nome.text,
       'email': this._email.text,
-      'nascimento': DateFormat('yyy-MM-dd').format(getData(this._nascimento.text)),
+      'nascimento':
+          DateFormat('yyy-MM-dd').format(getData(this._nascimento.text)),
       'telefone1': this._telefone.text,
       'sobre': this._sobre.text,
     };
@@ -173,8 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var data;
     try {
       var connection = new Connection();
-      data = await connection.put(
-          "pessoas/${this.widget.pessoa.id}", params);
+      data = await connection.put("pessoas/${this.widget.pessoa.id}", params);
     } finally {
       setState(() => _loading = false);
     }
