@@ -1,5 +1,6 @@
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/model/Pessoa.dart';
+import 'package:estagios/pages/perfil/AnunciosTab.dart';
 import 'package:estagios/pages/perfil/PerfilTab.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _PerfilPageState extends State<PerfilPage> {
           children: <Widget>[
             PerfilTab(pessoa: this.widget.pessoa),
 
-            Text('teste'),
+            AnunciosTab(),
           ],
         ),
       ),
