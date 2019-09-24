@@ -4,7 +4,7 @@ import 'package:estagios/model/Area.dart';
 import 'package:estagios/model/ItemVaga.dart';
 import 'package:estagios/model/Pessoa.dart';
 import 'package:estagios/pages/ProfilePage.dart';
-import 'package:estagios/pages/parts/VagaBox.dart';
+import 'package:estagios/pages/vagas/VagaBox.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

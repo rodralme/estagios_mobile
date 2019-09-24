@@ -1,6 +1,6 @@
 import 'package:estagios/pages/LoginPage.dart';
 import 'package:estagios/pages/RegisterPage.dart';
-import 'package:estagios/pages/VagasPage.dart';
+import 'package:estagios/pages/vagas/VagasPage.dart';
 import 'package:flutter/material.dart';
 
 import 'components/default_app_bar.dart';
