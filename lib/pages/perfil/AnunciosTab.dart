@@ -15,7 +15,9 @@ class _AnunciosTabState extends State<AnunciosTab> {
           child: Text('Cadastrar Nova Vaga'),
           color: Colors.blueAccent,
           textColor: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/nova_vaga');
+          },
         ),
         SizedBox(height: 20.0),
         Text('Não há vagas cadastradas')

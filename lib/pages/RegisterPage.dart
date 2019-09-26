@@ -1,8 +1,9 @@
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/components/campo_texto.dart';
+import 'package:estagios/components/loading.dart';
 import 'package:estagios/connection.dart';
 import 'package:estagios/model/Pessoa.dart';
-import 'package:estagios/pages/perfil/ProfilePage.dart';
+import 'package:estagios/pages/perfil/PerfilPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,11 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
     double mediaWidth = MediaQuery.of(context).size.width;
 
     if (this._loading) {
-      return Container(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return Loading();
     }
 
     return Scaffold(

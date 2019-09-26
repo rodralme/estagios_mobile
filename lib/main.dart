@@ -1,5 +1,6 @@
 import 'package:estagios/pages/LoginPage.dart';
 import 'package:estagios/pages/RegisterPage.dart';
+import 'package:estagios/pages/vaga/CadastroVagaPage.dart';
 import 'package:estagios/pages/vagas/VagasPage.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,7 @@ class Estagios extends StatelessWidget {
               ),
           '/register': (context) => RegisterPage(),
           '/vagas': (context) => VagasPage(),
+          '/nova_vaga': (context) => CadastroVagaPage(),
         });
   }
 }
