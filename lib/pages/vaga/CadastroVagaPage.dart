@@ -1,4 +1,5 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:estagios/components/campo_data.dart';
 import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/components/loading.dart';
@@ -48,18 +49,39 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
                 label: 'Descrição',
                 rules: 'required',
               ),
-              DateTimeField(
+              DropdownButtonFormField(
+                decoration: InputDecoration(
+                  labelText: 'Área',
+                ),
+                validator: ,
+              ),
+              CampoData(
                 controller: _inicio,
-                decoration: InputDecoration(labelText: 'Início'),
-                format: DateFormat('dd/MM/yyyy'),
-                onShowPicker: (context, currentValue) {
-                  return showDatePicker(
-                    context: context,
-                    firstDate: DateTime.now(),
-                    initialDate: currentValue ?? DateTime.now(),
-                    lastDate: DateTime.now().add(new Duration(days: 90)),
-                  );
-                },
+                label: 'Início',
+              ),
+              CampoData(
+                controller: _fim,
+                label: 'Fim',
+              ),
+              CampoTexto(
+                controller: _remuneracao,
+                label: 'Remuneração',
+                rules: 'required',
+              ),
+              CampoTexto(
+                controller: _cargaHoraria,
+                label: 'Carga Horária',
+                rules: 'required',
+              ),
+              CampoTexto(
+                controller: _email,
+                label: 'E-mail',
+                rules: 'email',
+              ),
+              CampoTexto(
+                controller: _telefone,
+                label: 'Telefone',
+                rules: 'phone',
               ),
               SizedBox(height: 20.0),
               RaisedButton(
