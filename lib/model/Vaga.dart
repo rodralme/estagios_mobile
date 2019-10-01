@@ -1,20 +1,20 @@
 class Vaga {
-  final int id;
-  final String data;
-  final String dataFormatada;
-  final String titulo;
-  final String descricao;
-  final String inicio;
-  final String fim;
-  final String area;
-  final String sigla;
-  final String empresa;
-  final String remuneracao;
-  final String cargaHoraria;
-  final String email;
-  final String telefone;
-  final bool candidatado;
-  final String banner;
+  int id;
+  String data;
+  String dataFormatada;
+  String titulo;
+  String descricao;
+  String inicio;
+  String fim;
+  String area;
+  String sigla;
+  String empresa;
+  String remuneracao;
+  String cargaHoraria;
+  String email;
+  String telefone;
+  bool candidatado;
+  String banner;
 
   Vaga({
     this.id,
@@ -54,6 +54,20 @@ class Vaga {
       banner: json['banner'] ?? '',
       empresa: json['empresa'] != null ? json['empresa']['nome'] : '<não informado>',
     );
+  }
+
+  Map toMap() {
+    var data = new Map();
+    data['titulo'] = this.titulo;
+    data['descricao'] = this.descricao;
+    data['area'] = this.area;
+    data['inicio'] = this.inicio;
+    data['fim'] = this.fim;
+    data['remuneracao'] = this.remuneracao;
+    data['cargaHoraria'] = this.cargaHoraria;
+    data['email'] = this.email;
+    data['telefone'] = this.telefone;
+    return data;
   }
 
   String periodo() {

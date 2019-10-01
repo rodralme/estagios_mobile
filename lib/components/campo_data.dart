@@ -5,13 +5,15 @@ import 'package:intl/intl.dart';
 class CampoData extends DateTimeField {
   CampoData({
     DateFormat format,
-    onShowPicker,
     TextEditingController controller,
     String label,
+    onSaved,
+    onShowPicker,
   }) : super(
           format: format ?? DateFormat('dd/MM/yyyy'),
           controller: controller,
           decoration: InputDecoration(labelText: label),
+          onSaved: onSaved,
           onShowPicker: onShowPicker ??
               (context, currentValue) {
                 return showDatePicker(

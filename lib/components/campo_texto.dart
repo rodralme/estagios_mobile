@@ -10,6 +10,7 @@ class CampoTexto extends StatelessWidget {
     this.icon,
     this.obscureText = false,
     this.rules,
+    this.onSaved,
   });
 
   final TextEditingController controller;
@@ -18,6 +19,7 @@ class CampoTexto extends StatelessWidget {
   final Icon icon;
   final bool obscureText;
   final String rules;
+  final FormFieldSetter<String> onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CampoTexto extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onSaved: onSaved,
       validator: (value) {
         for (var rule in (rules ?? '').split('|')) {
           var msg = validar(value, rule);
