@@ -2,7 +2,7 @@ import 'package:estagios/connection.dart';
 import 'package:estagios/helpers/config.areas.dart';
 import 'package:estagios/model/ItemVaga.dart';
 import 'package:estagios/model/Vaga.dart';
-import 'package:estagios/pages/VagaPage.dart';
+import 'package:estagios/pages/vagas/VagaPage.dart';
 import 'package:flutter/material.dart';
 
 class VagaBox extends StatelessWidget {

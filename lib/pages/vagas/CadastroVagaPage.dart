@@ -3,6 +3,7 @@ import 'package:estagios/components/campo_data.dart';
 import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/components/default_app_bar.dart';
 import 'package:estagios/components/loading.dart';
+import 'package:estagios/model/Area.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,8 +17,9 @@ class CadastroVagaPage extends StatefulWidget {
 
 class _CadastroVagaPageState extends State<CadastroVagaPage> {
   final formKey = GlobalKey<FormState>();
-  bool _loading = false;
+  bool _loading = true;
 
+  var areas = new List<DropdownMenuItem<dynamic>>();
   Vaga vaga = new Vaga();
 
   final _titulo = TextEditingController();
@@ -29,6 +31,28 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
   final _cargaHoraria = TextEditingController();
   final _email = TextEditingController();
   final _telefone = TextEditingController();
+
+
+  @override
+  void initState() {
+    popularDropdownArea();
+    super.initState();
+  }
+
+  void popularDropdownArea() async {
+    var conn = new Connection();
+    var data = await conn.get('areas');
+
+    for (var item in data) {
+      Area area = Area.fromJson(item);
+      areas.add(new DropdownMenuItem(
+        value: area.id.toString(),
+        child: new Text(area.nome),
+      ));
+    }
+
+    setState(() => _loading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +81,23 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
                 onSaved: (val) => vaga.descricao = val,
               ),
               DropdownButtonFormField(
+                items: areas,
+                value: vaga.area,
                 decoration: InputDecoration(
                   labelText: 'Área',
                 ),
+                onChanged: (value) {
+                  setState(() => vaga.area = value.toString());
+                },
                 onSaved: (val) => vaga.area = val,
               ),
               CampoData(
                 controller: _inicio,
                 label: 'Início',
-                onSaved: (val) => vaga.inicio = val,
+                onSaved: (val) {
+                  print(val);
+                  vaga.inicio = val;
+                }
               ),
               CampoData(
                 controller: _fim,
@@ -75,25 +107,23 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
               CampoTexto(
                 controller: _remuneracao,
                 label: 'Remuneração',
-                rules: 'required',
                 onSaved: (val) => vaga.remuneracao = val,
               ),
               CampoTexto(
                 controller: _cargaHoraria,
                 label: 'Carga Horária',
-                rules: 'required',
                 onSaved: (val) => vaga.cargaHoraria = val,
               ),
               CampoTexto(
                 controller: _email,
                 label: 'E-mail',
-                rules: 'email',
+                rules: 'required|email',
                 onSaved: (val) => vaga.email = val,
               ),
               CampoTexto(
                 controller: _telefone,
                 label: 'Telefone',
-                rules: 'phone',
+                rules: 'required',
                 onSaved: (val) => vaga.telefone = val,
               ),
               SizedBox(height: 20.0),
@@ -102,8 +132,10 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
                 color: Colors.blueAccent,
                 textColor: Colors.white,
                 onPressed: () {
-                  formKey.currentState.validate();
-                  salvar(context);
+                  if (formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                    salvar(context);
+                  }
                 },
               ),
             ],
@@ -118,13 +150,17 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
 
     try {
       var connection = new Connection();
-      var data = await connection.post("vagas", vaga.toMap());
+
+      var map = vaga.toMap();
+      var data = await connection.post("vagas", map);
 
       if (data['success']) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Vaga criada com sucesso'),
-          behavior: SnackBarBehavior.floating,
-        ));
+//        Scaffold.of(context).showSnackBar(SnackBar(
+//          content: Text('Vaga criada com sucesso'),
+//          behavior: SnackBarBehavior.floating,
+//        ));
+
+        Navigator.pop(context);
       }
     } catch (e) {
       print(e);

@@ -26,6 +26,7 @@ class Connection {
     if ([200, 422, 401].contains(response.statusCode)) {
       return jsonDecode(response.body);
     }
+    print(response.toString());
     throw new Exception('Erro ao realizar a requisição.');
   }
 
@@ -38,6 +39,7 @@ class Connection {
     if ([200, 422, 401].contains(response.statusCode)) {
       return jsonDecode(response.body);
     }
+    print(response.body);
     throw new Exception('Erro ao realizar a requisição.');
   }
 
@@ -50,6 +52,7 @@ class Connection {
     if ([200, 422, 401].contains(response.statusCode)) {
       return jsonDecode(response.body);
     }
+    print(response.toString());
     throw new Exception('Erro ao realizar a requisição.');
   }
 }

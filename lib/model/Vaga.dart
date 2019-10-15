@@ -50,23 +50,24 @@ class Vaga {
       cargaHoraria: json['carga_horaria'] ?? '<não informado>',
       email: json['email'] ?? '<não informado>',
       telefone: json['telefone'] ?? '<não informado>',
+      empresa: json['empresa'] ?? '',
       candidatado: json['candidatado'] ?? false,
       banner: json['banner'] ?? '',
-      empresa: json['empresa'] != null ? json['empresa']['nome'] : '<não informado>',
     );
   }
 
   Map toMap() {
-    var data = new Map();
+    var data = new Map<String, String>();
     data['titulo'] = this.titulo;
     data['descricao'] = this.descricao;
-    data['area'] = this.area;
+    data['area_atuacao_id'] = this.area;
     data['inicio'] = this.inicio;
     data['fim'] = this.fim;
     data['remuneracao'] = this.remuneracao;
-    data['cargaHoraria'] = this.cargaHoraria;
+    data['carga_horaria'] = this.cargaHoraria;
     data['email'] = this.email;
     data['telefone'] = this.telefone;
+    data['empresa'] = this.empresa;
     return data;
   }
 

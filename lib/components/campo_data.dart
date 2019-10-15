@@ -7,13 +7,15 @@ class CampoData extends DateTimeField {
     DateFormat format,
     TextEditingController controller,
     String label,
-    onSaved,
+    Function onSaved,
     onShowPicker,
   }) : super(
           format: format ?? DateFormat('dd/MM/yyyy'),
           controller: controller,
           decoration: InputDecoration(labelText: label),
-          onSaved: onSaved,
+          onSaved: (val) {
+            onSaved((new DateFormat('yyy-MM-dd HH:mm:ss')).format(val));
+          },
           onShowPicker: onShowPicker ??
               (context, currentValue) {
                 return showDatePicker(
