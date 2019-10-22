@@ -10,6 +10,7 @@ class CampoTexto extends StatelessWidget {
     this.icon,
     this.obscureText = false,
     this.rules,
+    this.maxLines,
     this.onSaved,
   });
 
@@ -19,6 +20,7 @@ class CampoTexto extends StatelessWidget {
   final Icon icon;
   final bool obscureText;
   final String rules;
+  final int maxLines;
   final FormFieldSetter<String> onSaved;
 
   @override
@@ -31,6 +33,7 @@ class CampoTexto extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
+      maxLines: maxLines,
       onSaved: onSaved,
       validator: (value) {
         for (var rule in (rules ?? '').split('|')) {

@@ -16,7 +16,7 @@ class Area {
       'color': Colors.red,
     },
     'EF': {
-      'icon': FontAwesomeIcons.laptop,
+      'icon': FontAwesomeIcons.dumbbell,
       'color': Colors.green,
     },
     'ECI': {

@@ -7,6 +7,7 @@ class CampoData extends DateTimeField {
     DateFormat format,
     TextEditingController controller,
     String label,
+    bool required,
     Function onSaved,
     onShowPicker,
   }) : super(
@@ -25,5 +26,11 @@ class CampoData extends DateTimeField {
                   lastDate: DateTime.now().add(new Duration(days: 90)),
                 );
               },
+          validator: (value) {
+            if (!required) {
+              return null;
+            }
+            return value == null ? 'Campo obrigatório' : null;
+          }
         );
 }
