@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:estagios/components/campo_data.dart';
 import 'package:estagios/components/campo_texto.dart';
 import 'package:estagios/components/default_app_bar.dart';
@@ -6,6 +8,7 @@ import 'package:estagios/model/Area.dart';
 import 'package:estagios/model/Vaga.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../connection.dart';
 
@@ -144,6 +147,18 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
                 onSaved: (val) => vaga.cargaHoraria = val,
               ),
               SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Enviar imagem'),
+                    onPressed: () {
+                      upload(context);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.0),
               RaisedButton(
                 child: Text('Salvar'),
                 color: Colors.blueAccent,
@@ -160,6 +175,29 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
         ),
       ),
     );
+  }
+
+  void upload(BuildContext context) async {
+    setState(() => _loading = true);
+
+    try {
+      var source = ImageSource.gallery;
+//      var source = ImageSource.camera;
+
+      File file = await ImagePicker.pickImage(source: source);
+
+      var connection = new Connection();
+      var data = await connection.upload(file);
+
+      print(data);
+
+      vaga.banner = data.image_key;
+
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() => _loading = false);
+    }
   }
 
   void salvar(BuildContext context) async {

@@ -68,6 +68,7 @@ class Vaga {
     data['email'] = this.email;
     data['telefone'] = this.telefone;
     data['empresa'] = this.empresa;
+    data['banner'] = this.banner;
     return data;
   }
 
