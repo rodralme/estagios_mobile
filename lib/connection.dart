@@ -100,12 +100,10 @@ class Connection {
     });
     var response = await dio.post("/upload", data: formData);
 
-    print(response.statusCode);
     if ([200, 422, 401].contains(response.statusCode)) {
-      return jsonDecode(response.data);
+      return response.data;
     }
 
-    print(response.data);
     throw new Exception('Erro ao realizar a requisição.');
   }
 }

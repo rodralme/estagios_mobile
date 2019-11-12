@@ -189,9 +189,7 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
       var connection = new Connection();
       var data = await connection.upload(file);
 
-      print(data);
-
-      vaga.banner = data.image_key;
+      vaga.banner = data['image_key'];
 
     } catch (e) {
       print(e);
