@@ -78,6 +78,17 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
           key: formKey,
           child: Column(
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Enviar imagem'),
+                    onPressed: () {
+                      upload(context);
+                    },
+                  ),
+                ],
+              ),
               CampoTexto(
                 controller: _titulo,
                 label: 'Título',
@@ -147,18 +158,6 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
                 onSaved: (val) => vaga.cargaHoraria = val,
               ),
               SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Enviar imagem'),
-                    onPressed: () {
-                      upload(context);
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20.0),
               RaisedButton(
                 child: Text('Salvar'),
                 color: Colors.blueAccent,
@@ -189,7 +188,7 @@ class _CadastroVagaPageState extends State<CadastroVagaPage> {
       var connection = new Connection();
       var data = await connection.upload(file);
 
-      vaga.banner = data['image_key'];
+      vaga.banner = data['image_key']['url'];
 
     } catch (e) {
       print(e);

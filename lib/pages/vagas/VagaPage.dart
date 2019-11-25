@@ -131,9 +131,7 @@ class _VagaPageState extends State<VagaPage> {
     print(url);
     if (url == null || url == '') return new SizedBox();
     return Center(
-      child: Image.network(
-        url,
-      ),
+      child: Image.network(url),
     );
   }
 

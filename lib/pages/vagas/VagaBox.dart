@@ -6,14 +6,12 @@ import 'package:estagios/pages/vagas/VagaPage.dart';
 import 'package:flutter/material.dart';
 
 class VagaBox extends StatelessWidget {
-
   VagaBox(this.vaga);
 
   final ItemVaga vaga;
 
   @override
   Widget build(BuildContext context) {
-
     var areaConfig = Area.areaConfig[this.vaga.sigla];
 
     return Column(
@@ -24,23 +22,29 @@ class VagaBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Chip(
-                label: Text(
-                    vaga.area,
+                label: Text(vaga.area,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                    )
-                ),
-                avatar: Icon(areaConfig['icon'], color: Colors.white, size: 20.0),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                avatar:
+                    Icon(areaConfig['icon'], color: Colors.white, size: 20.0),
                 backgroundColor: areaConfig['color'],
                 padding: const EdgeInsets.only(left: 8.0, right: 4.0),
               ),
               Row(
                 children: <Widget>[
-                  Icon(Icons.access_time),
+                  Icon(
+                    Icons.access_time,
+                    size: 22,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(vaga.data),
+                    child: Text(
+                      vaga.data,
+                      style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -77,6 +81,6 @@ class VagaBox extends StatelessWidget {
           },
         ),
       ],
-
     );
-  }}
+  }
+}
