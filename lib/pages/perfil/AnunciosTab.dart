@@ -19,8 +19,8 @@ class _AnunciosTabState extends State<AnunciosTab> {
             Navigator.pushNamed(context, '/nova_vaga');
           },
         ),
-        SizedBox(height: 20.0),
-        Text('Não há vagas cadastradas')
+//        SizedBox(height: 20.0),
+//        Text('Não há vagas cadastradas')
       ],
     );
   }
